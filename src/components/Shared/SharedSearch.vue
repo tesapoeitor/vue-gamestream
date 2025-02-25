@@ -1,6 +1,7 @@
 <script setup>
 import IconSearch from '../Icons/IconSearch.vue'
 
+const model = defineModel()
 </script>
 
 <template>
