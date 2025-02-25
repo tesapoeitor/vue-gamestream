@@ -1,12 +1,19 @@
 <script setup>
+import { computed, ref } from 'vue';
 import IconSearch from '../Icons/IconSearch.vue'
 
 const model = defineModel()
+const isActive = ref(false)
+
+const onFocus = () => { isActive.value = true }
+const onBlur = () => { isActive.value = false }
+
+const searchClasses = computed(() => ({'search--active': isActive.value}))
 </script>
 
 <template>
   <form @submit="onSearch">
-    <div class="search" :class="classes">
+    <div class="search" :class="searchClasses">
       <input
         class="search__input"
         v-model="model"
