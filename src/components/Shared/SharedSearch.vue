@@ -9,6 +9,13 @@ const onFocus = () => { isActive.value = true }
 const onBlur = () => { isActive.value = false }
 
 const searchClasses = computed(() => ({'search--active': isActive.value}))
+
+const emit = defineEmits(['search'])
+
+const onSearch = (event) => {
+  event.preventDefault()
+  emit('search', model.value)
+}
 </script>
 
 <template>

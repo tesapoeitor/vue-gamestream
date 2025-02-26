@@ -1,14 +1,26 @@
 <script setup>
-import { useSlots, ref } from 'vue';
+import { useSlots, ref, computed } from 'vue';
 import SharedSearch from '../Shared/SharedSearch.vue';
 
-defineProps({
-  games: Array,
+const { games } = defineProps({
+  games: {
+    type: Array,
+    required: true
+  }
 })
 
 const slots = useSlots()
 const searchInput = ref('')
 
+const gamesViews = computed(() => {
+  return games.filter(game =>
+    game.title.toLowerCase().includes(searchInput.value.toLowerCase())
+  )
+})
+
+const onSearch = (searchTerm) => {
+  searchInput.value = searchTerm
+}
 </script>
 
 <template>
@@ -16,8 +28,8 @@ const searchInput = ref('')
     <slot name="title"></slot>
     <h2 v-if="!slots.title">Recent games</h2>
     <div class="game-layout">
-      <SharedSearch v-model="searchInput"/>
-      <slot></slot>
+      <SharedSearch v-model="searchInput" @search="onSearch"/>
+      <slot :games="gamesViews"></slot>
     </div>
   </section>
 </template>

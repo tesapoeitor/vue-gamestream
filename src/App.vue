@@ -34,11 +34,13 @@ onMounted(()=> {
 
 <template>
   <LayoutHero />
-  <GameLayout>
+  <GameLayout :games="state.data">
     <template #title>
       <h2>Juegos Actualizados</h2>
     </template>
-    <GameCard v-for="game in state.data" :game="game" :key="game.title" />
+    <template #default="{ games }">
+      <GameCard v-for="game in games" :game="game" :key="game.title" />
+    </template>
   </GameLayout>
   <main></main>
 </template>
