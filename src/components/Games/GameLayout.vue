@@ -1,6 +1,7 @@
 <script setup>
 import { useSlots, ref, computed } from 'vue';
 import SharedSearch from '../Shared/SharedSearch.vue';
+import GameCard from './GameCard.vue';
 
 const { games } = defineProps({
   games: {
@@ -29,7 +30,9 @@ const onSearch = (searchTerm) => {
     <h2 v-if="!slots.title">Recent games</h2>
     <div class="game-layout">
       <SharedSearch v-model="searchInput" @search="onSearch"/>
-      <slot :games="gamesViews"></slot>
+      <div>
+        <GameCard v-for="game in gamesViews" :game="game" :key="game.title" />
+      </div>
     </div>
   </section>
 </template>
