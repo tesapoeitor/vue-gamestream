@@ -44,7 +44,9 @@ onMounted(()=> {
         <GameCard v-for="game in games" :game="game" :key="game.title" />
       </template>
     </GameLayout>
-    <GameModal />
+    <Teleport to="body">
+      <GameModal />
+    </Teleport>
   </main>
 </template>
 
