@@ -1,27 +1,24 @@
 <script setup>
-import { useSlots, ref, computed } from 'vue';
+import { useSlots, computed } from 'vue';
 import SharedSearch from '../Shared/SharedSearch.vue';
 import GameCard from './GameCard.vue';
+import { useSearchQuery } from '../../composables/useSearchQuery';
 
 const { games } = defineProps({
   games: {
     type: Array,
     required: true
   }
-})
+});
 
-const slots = useSlots()
-const searchInput = ref('')
+const slots = useSlots();
+const { searchInput } = useSearchQuery();
 
 const gamesViews = computed(() => {
   return games.filter(game =>
     game.title.toLowerCase().includes(searchInput.value.toLowerCase())
-  )
-})
-
-const onSearch = (searchTerm) => {
-  searchInput.value = searchTerm
-}
+  );
+});
 </script>
 
 <template>
@@ -29,7 +26,7 @@ const onSearch = (searchTerm) => {
     <slot name="title"></slot>
     <h2 v-if="!slots.title">Recent games</h2>
     <div class="game-layout">
-      <SharedSearch v-model="searchInput" @search="onSearch"/>
+      <SharedSearch />
       <div>
         <GameCard v-for="game in gamesViews" :game="game" :key="game.title" />
       </div>

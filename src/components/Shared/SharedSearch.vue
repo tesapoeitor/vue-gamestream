@@ -1,6 +1,7 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import IconSearch from '../Icons/IconSearch.vue'
+import { useSearchQuery } from '../../composables/useSearchQuery';
 
 const model = defineModel()
 const isActive = ref(false)
@@ -10,20 +11,24 @@ const onBlur = () => { isActive.value = false }
 
 const searchClasses = computed(() => ({'search--active': isActive.value}))
 
-const emit = defineEmits(['search'])
+const { updateSearchQuery } = useSearchQuery();
+const searchInput = ref('');
 
-const onSearch = (event) => {
-  event.preventDefault()
-  emit('search', model.value)
-}
+const handleSearch = () => {
+  updateSearchQuery(searchInput.value);
+};
+
+watch(searchInput, (newValue) => {
+  updateSearchQuery(newValue)
+})
 </script>
 
 <template>
-  <form @submit="onSearch">
+  <form @submit.prevent="handleSearch">
     <div class="search" :class="searchClasses">
       <input
         class="search__input"
-        v-model="model"
+        v-model="searchInput"
         @focus="onFocus"
         @blur="onBlur"
         type="text"
